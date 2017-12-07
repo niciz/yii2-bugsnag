@@ -1,5 +1,5 @@
 {
-    "name": "pinfirestudios/yii2-bugsnag",
+    "name": "ivopereira/yii2-bugsnag",
     "description": "Yii2 log target and ErrorHandler for BugSnag",
     "keywords": ["logging", "errors"],
     "license": "MIT",
@@ -16,7 +16,7 @@
         }
     },
     "require": {
-        "bugsnag/bugsnag": "2.*",
+        "bugsnag/bugsnag": "^3.0",
         "yiisoft/yii2": "^2.0"
     },
 	"suggest": {
