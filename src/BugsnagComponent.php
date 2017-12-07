@@ -3,6 +3,7 @@ namespace pinfirestudios\yii2bugsnag;
 
 use Yii;
 use \yii\web\View;
+use Bugsnag;
 
 class BugsnagComponent extends \yii\base\Component
 {
