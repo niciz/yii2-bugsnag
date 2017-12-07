@@ -31,7 +31,7 @@ class BugsnagComponent extends \yii\base\Component
             throw new \yii\base\InvalidConfigException("bugsnag_api_key must be set");
         }
 
-        $this->client = new \Bugsnag_Client($this->bugsnag_api_key);
+        $this->client = Bugsnag\Client::make($this->bugsnag_api_key);
 
         if (!empty($this->notifyReleaseStages))
         {
