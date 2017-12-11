@@ -51,12 +51,12 @@ class BugsnagComponent extends \yii\base\Component
             $this->releaseStage = defined('YII_ENV') ? YII_ENV : 'production';
         }
 
-        $client->setNotifier([
+        $this->client->setNotifier([
             'name' => 'Yii2 Bugsnag',
             'url' => 'https://github.com/pinfirestudios/yii2-bugsnag',
         ]);
 
-        $client->registerDefaultCallbacks();
+        $this->client->registerDefaultCallbacks();
 
         Yii::trace("Setting release stage to {$this->releaseStage}.", __CLASS__);
         $this->client->setReleaseStage($this->releaseStage);
@@ -119,7 +119,7 @@ class BugsnagComponent extends \yii\base\Component
     {
         $this->getClient()->notifyError($category, $message, function ($report) {
           $report->setSeverity('error');
-          $this->setMetaData(['trace' => $trace]);
+          $report->setMetaData(['trace' => $trace]);
         });
     }
 
@@ -127,7 +127,7 @@ class BugsnagComponent extends \yii\base\Component
     {
         $this->getClient()->notifyError($category, $message, function ($report) {
           $report->setSeverity('warning');
-          $this->setMetaData(['trace' => $trace]);
+          $report->setMetaData(['trace' => $trace]);
         });
     }
 
@@ -135,7 +135,7 @@ class BugsnagComponent extends \yii\base\Component
     {
         $this->getClient()->notifyError($category, $message, function ($report) {
           $report->setSeverity('info');
-          $this->setMetaData(['trace' => $trace]);
+          $report->setMetaData(['trace' => $trace]);
         });
     }
 
