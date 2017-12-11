@@ -34,6 +34,9 @@ class BugsnagComponent extends \yii\base\Component
 
         $this->client = Bugsnag\Client::make($this->bugsnag_api_key);
 
+        // Reporting unhandled exceptions
+        Bugsnag\Handler::register($this->getClient());
+
         if (!empty($this->notifyReleaseStages))
         {
             $this->client->setNotifyReleaseStages($this->notifyReleaseStages);
@@ -42,12 +45,18 @@ class BugsnagComponent extends \yii\base\Component
         $this->client->setFilters($this->filters);
 
         $this->client->setBatchSending(true);
-        // $this->client->setBeforeNotifyFunction([$this, 'beforeBugsnagNotify']);
 
         if (empty($this->releaseStage))
         {
             $this->releaseStage = defined('YII_ENV') ? YII_ENV : 'production';
         }
+
+        $client->setNotifier([
+            'name' => 'Yii2 Bugsnag',
+            'url' => 'https://github.com/pinfirestudios/yii2-bugsnag',
+        ]);
+
+        $client->registerDefaultCallbacks();
 
         Yii::trace("Setting release stage to {$this->releaseStage}.", __CLASS__);
         $this->client->setReleaseStage($this->releaseStage);
@@ -108,17 +117,26 @@ class BugsnagComponent extends \yii\base\Component
 
     public function notifyError($category, $message, $trace = null)
     {
-        $this->getClient()->notifyError($category, $message, ['trace' => $trace], 'error');
+        $this->getClient()->notifyError($category, $message, function ($report) {
+          $report->setSeverity('error');
+          $this->setMetaData(['trace' => $trace]);
+        });
     }
 
     public function notifyWarning($category, $message, $trace = null)
     {
-        $this->getClient()->notifyError($category, $message, ['trace' => $trace], 'warning');
+        $this->getClient()->notifyError($category, $message, function ($report) {
+          $report->setSeverity('warning');
+          $this->setMetaData(['trace' => $trace]);
+        });
     }
 
     public function notifyInfo($category, $message, $trace = null)
     {
-        $this->getClient()->notifyError($category, $message, ['trace' => $trace], 'info');
+        $this->getClient()->notifyError($category, $message, function ($report) {
+          $report->setSeverity('info');
+          $this->setMetaData(['trace' => $trace]);
+        });
     }
 
     public function notifyException($exception, $severity = null)
@@ -134,7 +152,9 @@ class BugsnagComponent extends \yii\base\Component
             $this->getClient()->setContext($exception->getContext());
         }
 
-        $this->getClient()->notifyException($exception, $metadata, $severity);
+        $this->getClient()->notifyError($category, $message, function ($report) use ($severity) {
+          $report->setSeverity($severity);
+        });
     }
 
     public function runShutdownHandler()
