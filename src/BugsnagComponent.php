@@ -100,7 +100,7 @@ class BugsnagComponent extends \yii\base\Component
         $clientUserData = $this->getUserData();
         if (!empty($clientUserData))
         {
-          $this->client->registerCallback(new CustomUser(function () {
+          $this->client->registerCallback(new CustomUser(function () use ($clientUserData) {
               return $clientUserData;
           }));
         }
