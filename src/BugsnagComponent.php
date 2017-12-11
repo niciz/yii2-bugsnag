@@ -62,10 +62,6 @@ class BugsnagComponent extends \yii\base\Component
 
         $this->client->registerDefaultCallbacks();
 
-        $this->client->registerCallback(new CustomUser(function () {
-            return $clientUserData;
-        }));
-
         $this->client->registerCallback(function (Report $report) {
             if (!$this->exportingLog)
             {
