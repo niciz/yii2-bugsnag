@@ -5,6 +5,7 @@ use Yii;
 use \yii\web\View;
 use Bugsnag\Client;
 use Bugsnag\Handler;
+use Bugsnag\Report;
 use Bugsnag\Callbacks\CustomUser;
 use Bugsnag\Callbacks\GlobalMetaData;
 
@@ -65,17 +66,16 @@ class BugsnagComponent extends \yii\base\Component
             return $clientUserData;
         }));
 
-        $this->client->registerCallback(new GlobalMetaData(function () {
+        $this->client->registerCallback(function (Report $report) {
             if (!$this->exportingLog)
             {
                 Yii::getLogger()->flush(true);
             }
 
-            return [
+            $report->setMetadata([
                 'logs' => BugsnagLogTarget::getMessages(),
-            ];
-
-        }));
+            ]);
+        });
 
         Yii::trace("Setting release stage to {$this->releaseStage}.", __CLASS__);
         $this->client->setReleaseStage($this->releaseStage);
