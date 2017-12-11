@@ -154,7 +154,7 @@ class BugsnagComponent extends \yii\base\Component
             $this->getClient()->setContext($exception->getContext());
         }
 
-        $this->getClient()->notifyError($exception, function ($report) use ($severity, $metadata) {
+        $this->getClient()->notifyException($exception, function ($report) use ($severity, $metadata) {
           $report->setSeverity($severity);
           $report->setMetaData($metadata);
         });
