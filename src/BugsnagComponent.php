@@ -144,6 +144,6 @@ class BugsnagComponent extends \yii\base\Component
             Yii::getLogger()->flush(true);
         }
 
-        $this->getClient()->shutdownHandler();
+        Bugsnag\Handler::register($this->getClient())->shutdownHandler();
     }
 }
