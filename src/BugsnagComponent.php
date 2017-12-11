@@ -108,25 +108,21 @@ class BugsnagComponent extends \yii\base\Component
 
     public function notifyError($category, $message, $trace = null)
     {
-        die('debug notify error');
         $this->getClient()->notifyError($category, $message, ['trace' => $trace], 'error');
     }
 
     public function notifyWarning($category, $message, $trace = null)
     {
-        die('debug notify warning');
         $this->getClient()->notifyError($category, $message, ['trace' => $trace], 'warning');
     }
 
     public function notifyInfo($category, $message, $trace = null)
     {
-        die('debug notify info');
         $this->getClient()->notifyError($category, $message, ['trace' => $trace], 'info');
     }
 
     public function notifyException($exception, $severity = null)
     {
-        die('debug notify exception');
         $metadata = null;
         if ($exception instanceof BugsnagCustomMetadataInterface)
         {
