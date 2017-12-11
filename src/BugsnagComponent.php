@@ -117,7 +117,7 @@ class BugsnagComponent extends \yii\base\Component
 
     public function notifyError($category, $message, $trace = null)
     {
-        $this->getClient()->notifyError($category, $message, function ($report) {
+        $this->getClient()->notifyError($category, $message, function ($report) use ($trace) {
           $report->setSeverity('error');
           $report->setMetaData(['trace' => $trace]);
         });
@@ -125,7 +125,7 @@ class BugsnagComponent extends \yii\base\Component
 
     public function notifyWarning($category, $message, $trace = null)
     {
-        $this->getClient()->notifyError($category, $message, function ($report) {
+        $this->getClient()->notifyError($category, $message, function ($report) use ($trace) {
           $report->setSeverity('warning');
           $report->setMetaData(['trace' => $trace]);
         });
@@ -133,7 +133,7 @@ class BugsnagComponent extends \yii\base\Component
 
     public function notifyInfo($category, $message, $trace = null)
     {
-        $this->getClient()->notifyError($category, $message, function ($report) {
+        $this->getClient()->notifyError($category, $message, function ($report) use ($trace) {
           $report->setSeverity('info');
           $report->setMetaData(['trace' => $trace]);
         });
@@ -152,8 +152,9 @@ class BugsnagComponent extends \yii\base\Component
             $this->getClient()->setContext($exception->getContext());
         }
 
-        $this->getClient()->notifyError($category, $message, function ($report) use ($severity) {
+        $this->getClient()->notifyError($exception, function ($report) use ($severity, $metadata) {
           $report->setSeverity($severity);
+          $report->setMetaData($metadata);
         });
     }
 
