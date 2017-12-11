@@ -3,8 +3,9 @@ namespace pinfirestudios\yii2bugsnag;
 
 use Yii;
 use \yii\web\View;
-use Bugsnag;
-use Callbacks\CustomUser;
+use Bugsnag\Client;
+use Bugsnag\Handler;
+use Bugsnag\Callbacks\CustomUser;
 
 class BugsnagComponent extends \yii\base\Component
 {
