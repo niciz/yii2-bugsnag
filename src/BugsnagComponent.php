@@ -134,7 +134,7 @@ class BugsnagComponent extends \yii\base\Component
 
     public function notifyException($exception, $severity = null)
     {
-        $metadata = [];
+        $metadata = ['debug' => 'metadata'];
         if ($exception instanceof BugsnagCustomMetadataInterface)
         {
             $metadata = $exception->getMetadata();
