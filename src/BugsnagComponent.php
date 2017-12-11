@@ -6,6 +6,7 @@ use \yii\web\View;
 use Bugsnag\Client;
 use Bugsnag\Handler;
 use Bugsnag\Callbacks\CustomUser;
+use Bugsnag\Callbacks\GlobalMetaData;
 
 class BugsnagComponent extends \yii\base\Component
 {
@@ -60,6 +61,22 @@ class BugsnagComponent extends \yii\base\Component
 
         $this->client->registerDefaultCallbacks();
 
+        $this->client->registerCallback(new CustomUser(function () {
+            return $clientUserData;
+        }));
+
+        $this->client->registerCallback(new GlobalMetaData(function () {
+            if (!$this->exportingLog)
+            {
+                Yii::getLogger()->flush(true);
+            }
+
+            return [
+                'logs' => BugsnagLogTarget::getMessages(),
+            ];
+
+        }));
+
         Yii::trace("Setting release stage to {$this->releaseStage}.", __CLASS__);
         $this->client->setReleaseStage($this->releaseStage);
     }
@@ -88,35 +105,11 @@ class BugsnagComponent extends \yii\base\Component
         if (!empty($clientUserData))
         {
           $this->client->registerCallback(new CustomUser(function () {
-                return $clientUserData;
-            }));
+              return $clientUserData;
+          }));
         }
 
         return $this->client;
-    }
-
-    public function beforeBugsnagNotify(\Bugsnag_Error $error)
-    {
-        if (!$this->exportingLog)
-        {
-            Yii::getLogger()->flush(true);
-        }
-
-        if (isset($error->metaData['trace']))
-        {
-            $trace = $error->metaData['trace'];
-            unset($error->metaData['trace']);
-
-            if (!empty($trace))
-            {
-                $firstFrame = array_shift($trace);
-                $error->setStacktrace(\Bugsnag_Stacktrace::fromBacktrace($error->config, $trace, $firstFrame['file'], $firstFrame['line']));
-            }
-        }
-
-        $error->setMetaData([
-            'logs' => BugsnagLogTarget::getMessages(),
-        ]);
     }
 
     public function notifyError($category, $message, $trace = null)
