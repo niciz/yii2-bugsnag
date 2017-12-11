@@ -4,6 +4,7 @@ namespace pinfirestudios\yii2bugsnag;
 use Yii;
 use \yii\web\View;
 use Bugsnag;
+use Callbacks\CustomUser;
 
 class BugsnagComponent extends \yii\base\Component
 {
@@ -32,10 +33,10 @@ class BugsnagComponent extends \yii\base\Component
             throw new \yii\base\InvalidConfigException("bugsnag_api_key must be set");
         }
 
-        $this->client = Bugsnag\Client::make($this->bugsnag_api_key);
+        $this->client = Client::make($this->bugsnag_api_key);
 
         // Reporting unhandled exceptions
-        Bugsnag\Handler::register($this->getClient());
+        Handler::register($this->getClient());
 
         if (!empty($this->notifyReleaseStages))
         {
@@ -85,7 +86,7 @@ class BugsnagComponent extends \yii\base\Component
         $clientUserData = $this->getUserData();
         if (!empty($clientUserData))
         {
-          $this->client->registerCallback(new Bugsnag\CustomUser(function () {
+          $this->client->registerCallback(new CustomUser(function () {
                 return $clientUserData;
             }));
         }
@@ -167,6 +168,6 @@ class BugsnagComponent extends \yii\base\Component
             Yii::getLogger()->flush(true);
         }
 
-        Bugsnag\Handler::register($this->getClient())->shutdownHandler();
+        Handler::register($this->getClient())->shutdownHandler();
     }
 }
