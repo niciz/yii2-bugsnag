@@ -57,6 +57,7 @@ class BugsnagComponent extends \yii\base\Component
 
         $this->client->setNotifier([
             'name' => 'Yii2 Bugsnag',
+            'version' => '1.0.0',
             'url' => 'https://github.com/pinfirestudios/yii2-bugsnag',
         ]);
 
