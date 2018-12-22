@@ -8,6 +8,10 @@
             "name": "Justin Cherniak",
             "email": "justin@pinfirestudios.com",
             "homepage": "http://www.pinfirestudios.com"
+        },
+        {
+            "name": "Ivo Pereira",
+            "email": "ivoecpereira@gmail.com"
         }
     ],
     "autoload": {
