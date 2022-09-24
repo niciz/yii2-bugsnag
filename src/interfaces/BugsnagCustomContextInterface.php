@@ -1,10 +1,11 @@
 <?php
-namespace pinfirestudios\yii2bugsnag;
+
+namespace niciz\yii2bugsnag\interfaces;
 
 /**
  * Allows an exception to set a custom context (instead of defaulting to URL)
  */
-interface BugsnagCustomContextInterface 
+interface BugsnagCustomContextInterface
 {
     /**
      * Gets the context for this exception

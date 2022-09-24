@@ -1,10 +1,14 @@
 <?php
-namespace pinfirestudios\yii2bugsnag;
+
+namespace niciz\yii2bugsnag;
+
+use niciz\yii2bugsnag\traits\BugsnagErrorHandlerTrait;
+use yii\web\ErrorHandler;
 
 /**
  * Handles exceptions in web applications
  */
-class BugsnagWebErrorHandler extends \yii\web\ErrorHandler
+class BugsnagWebErrorHandler extends ErrorHandler
 {
     use BugsnagErrorHandlerTrait;
 }

@@ -4,11 +4,11 @@ To use, configure as such:
     $config = [
         'components' => [
             'errorHandler' => [
-                'class' => 'pinfirestudios\yii2bugsnag\BugsnagWebErrorHandler' // For your web configuration
-                'class' => 'pinfirestudios\yii2bugsnag\BugsnagConsoleErrorHandler' // For your console configuration
+                'class' => 'niciz\yii2bugsnag\BugsnagWebErrorHandler' // For your web configuration
+                'class' => 'niciz\yii2bugsnag\BugsnagConsoleErrorHandler' // For your console configuration
             ],
             'bugsnag' => [
-                'class' => 'pinfirestudios\yii2bugsnag\BugsnagComponent', // Or your override of such
+                'class' => 'niciz\yii2bugsnag\BugsnagComponent', // Or your override of such
                 'bugsnag_api_key' => 'YOUR API KEY',
                 'notifyReleaseStages' => ['staging', 'production'],
             ],
@@ -16,7 +16,7 @@ To use, configure as such:
                 'traceLevel' => 8,
                 'targets' => [
                     [
-                        'class' => 'pinfirestudios\yii2bugsnag\BugsnagLogTarget',
+                        'class' => 'niciz\yii2bugsnag\BugsnagLogTarget',
                         'levels' => ['error', 'warning', 'info', 'trace'],
                         'logVars' => [],
                     ]
@@ -45,7 +45,7 @@ If you would like to use Bugsnag's javascript on your site, you'll need to insta
     class AppAsset extends AssetBundle
     {
         public $depends = [
-            'pinfirestudios\yii2bugsnag\BugsnagAsset',
+            'niciz\yii2bugsnag\assets\BugsnagAsset',
         ];
     }
 

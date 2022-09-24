@@ -1,10 +1,11 @@
 <?php
-namespace pinfirestudios\yii2bugsnag;
+
+namespace niciz\yii2bugsnag\interfaces;
 
 /**
  * Allows an exception to set custom metadata to pass to Bugsnag
  */
-interface BugsnagCustomMetadataInterface 
+interface BugsnagCustomMetadataInterface
 {
     /**
      * Gets metadata for this exception

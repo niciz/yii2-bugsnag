@@ -1,6 +1,9 @@
 <?php
-namespace pinfirestudios\yii2bugsnag;
 
+namespace niciz\yii2bugsnag\traits;
+
+use Exception;
+use niciz\yii2bugsnag\BugsnagComponent;
 use Yii;
 
 /**
@@ -21,20 +24,20 @@ trait BugsnagErrorHandlerTrait
      */
     public function logException($exception)
     {
-        if (!$this->inExceptionHandler)
-        {
+        if (!$this->inExceptionHandler) {
             Yii::$app->bugsnag->notifyException($exception);
         }
 
-        try
-        {
-            Yii::error("Caught exception " . get_class($exception) . ": " . (string)$exception, BugsnagComponent::IGNORED_LOG_CATEGORY);
+        try {
+            Yii::error("Caught exception " . get_class($exception) . ": " . $exception, BugsnagComponent::IGNORED_LOG_CATEGORY);
+        } catch (Exception $e) {
         }
-        catch (\Exception $e) {}
     }
 
     /**
      * Ensures CB logs are written to the DB if an exception occurs
+     * @param $exception
+     * @return void
      */
     public function handleException($exception)
     {
@@ -42,8 +45,7 @@ trait BugsnagErrorHandlerTrait
         $this->inExceptionHandler = true;
 
         // When running under codeception, a Yii application won't actually exist, so we just have to eat it here...
-        if (is_object(Yii::$app))
-        {
+        if (is_object(Yii::$app)) {
             // Call into Bugsnag client's errorhandler since this will potentially kill the script below
             Yii::$app->bugsnag->runShutdownHandler();
         }
@@ -57,8 +59,7 @@ trait BugsnagErrorHandlerTrait
     public function handleFatalError()
     {
         // When running under codeception, a Yii application won't actually exist, so we just have to eat it here...
-        if (is_object(Yii::$app))
-        {
+        if (is_object(Yii::$app)) {
             // Call into Bugsnag client's errorhandler since this will potentially kill the script below
             Yii::$app->bugsnag->runShutdownHandler();
         }
