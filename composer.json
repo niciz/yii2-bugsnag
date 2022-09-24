@@ -15,7 +15,7 @@
         }
     },
     "require": {
-        "php": "7.0",
+        "php": ">7.0",
         "bugsnag/bugsnag": "^3.0",
         "yiisoft/yii2": "^2.0"
     },
