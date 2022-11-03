@@ -76,7 +76,7 @@ class BugsnagLogTarget extends Target
                     $message = print_r($message, true);
                 }
 
-                $date = date('Y-m-d H:i:s', (int)$timestamp) . '.' . substr(fmod($timestamp, 1), 2, 4);
+                $date = date('Y-m-d H:i:s', (int)$timestamp) . '.' . substr(fmod((float)$timestamp, 1), 2, 4);
                 return "{$levelMap[$level]} - ({$category}) @ {$date} - {$message}";
             },
             self::$exportedMessages,
