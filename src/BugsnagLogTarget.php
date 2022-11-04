@@ -76,8 +76,11 @@ class BugsnagLogTarget extends Target
                     $message = print_r($message, true);
                 }
 
+                // if level is not in levelMap then use error
+                $key = $levelMap[$level] ?? 'error';
+
                 $date = date('Y-m-d H:i:s', (int)$timestamp) . '.' . substr(fmod((float)$timestamp, 1), 2, 4);
-                return "{$levelMap[$level]} - ({$category}) @ {$date} - {$message}";
+                return "{$key} - ({$category}) @ {$date} - {$message}";
             },
             self::$exportedMessages,
             isset(self::$instance) ? self::$instance->messages : []
